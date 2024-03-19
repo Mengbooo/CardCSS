@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Master</title>
+</head>
+
+<body>
+    <div class="element" id="element">
+        <img src="yoxi.jpg" alt="">
+    </div>
+
+    <script>
+        const multiple = 40;
+        const mouseOverContainer = document.getElementsByTagName("body")[0];
+        const element = document.getElementById("element");
+        const img = element;
+
+        function transformElement(x, y) {
+            let box = element.getBoundingClientRect();
+            const calcX = -(y - box.y - box.height / 2) / multiple;
+            const calcY = (x - box.x - box.width / 2) / multiple;
+            const percentage = parseInt((x - box.x) / box.width * 1000) / 10;
+
+            element.style.transform = "rotateX(" + calcX + "deg) " + "rotateY(" + calcY + "deg)";
+            img.style.setProperty('--per', `${percentage}%`);
+        }
+
+        mouseOverContainer.addEventListener("mousemove", (e) => {
+            window.requestAnimationFrame(function () {
+                transformElement(e.clientX, e.clientY);
+            });
+        });
+    </script>
+</body>
+<style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        transform-style: preserve-3d;
+        perspective: 500px;
+        background: #000;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .element {
+        position: relative;
+        border-radius: 15px;
+        width: 350px;
+        height: 550px;
+        transform-style: preserve-3d;
+    }
+
+    .element::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: 15px;
+        background: linear-gradient(115deg, transparent 0%,
+                rgba(200, 200, 200, 0.5) var(--per),
+                rgba(0, 0, 0, 0.5) calc(var(--per) + 25%),
+                rgba(200, 200, 200, 0.5) calc(var(--per) + 50%),
+                transparent 100%);
+        mix-blend-mode: color-dodge;
+    }
+
+    .element::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: 15px;
+        background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");
+        mix-blend-mode: color-dodge;
+    }
+
+    img {
+        width: 350px;
+        height: 550px;
+        border-radius: 15px;
+    }
+</style>
+
+</html>
